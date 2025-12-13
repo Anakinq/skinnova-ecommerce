@@ -4,6 +4,8 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { ProductsTable } from "@/components/products-table"
 import { checkIsAdmin } from "@/lib/check-admin"
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import { AlertCircle } from "lucide-react"
 
 export default async function AdminProductsPage() {
   const isAdmin = await checkIsAdmin()
@@ -20,7 +22,21 @@ export default async function AdminProductsPage() {
     redirect("/auth/login?redirect=/admin/products")
   }
 
-  const { data: products } = await supabase.from("products").select("*").order("created_at", { ascending: false })
+  const { data: products, error } = await supabase.from("products").select("*").order("created_at", { ascending: false })
+
+  if (error) {
+    return (
+      <div className="container px-4 py-12 md:px-6">
+        <Alert variant="destructive">
+          <AlertCircle className="h-4 w-4" />
+          <AlertTitle>Error Loading Products</AlertTitle>
+          <AlertDescription>
+            {error.message}
+          </AlertDescription>
+        </Alert>
+      </div>
+    )
+  }
 
   return (
     <div className="container px-4 py-12 md:px-6">
