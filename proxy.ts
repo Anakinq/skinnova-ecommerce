@@ -1,4 +1,4 @@
-// middleware.ts renamed to proxy.ts to follow Next.js 13+ conventions
+// proxy.ts - Updated from middleware.ts to follow Next.js 13+ conventions
 import { updateSession } from "@/lib/supabase/middleware"
 import type { NextRequest } from "next/server"
 
