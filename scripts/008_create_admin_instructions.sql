@@ -1,0 +1,11 @@
+-- INSTRUCTIONS TO CREATE YOUR FIRST ADMIN USER
+-- 
+-- After signing up with your account, run this query in the Supabase SQL editor
+-- to make yourself an admin:
+-- 
+-- UPDATE profiles SET is_admin = true WHERE email = 'your-email@example.com';
+-- 
+-- Replace 'your-email@example.com' with your actual email address.
+-- 
+-- You can also run this query to check who is an admin:
+-- SELECT email, is_admin FROM profiles WHERE is_admin = true;

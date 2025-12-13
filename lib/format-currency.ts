@@ -1,0 +1,14 @@
+// Utility function to format prices in Nigerian Naira
+export function formatCurrency(amount: number): string {
+  return new Intl.NumberFormat("en-NG", {
+    style: "currency",
+    currency: "NGN",
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  }).format(amount)
+}
+
+// Alternative simple formatter
+export function formatPrice(amount: number): string {
+  return `₦${amount.toLocaleString("en-NG", { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`
+}
