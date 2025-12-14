@@ -14,6 +14,7 @@ BEGIN
   REFRESH MATERIALIZED VIEW admin_users;
   RETURN NULL;
 END;
+
 $$ LANGUAGE plpgsql;
 
 -- Step 3: Create triggers to refresh the view when profiles change

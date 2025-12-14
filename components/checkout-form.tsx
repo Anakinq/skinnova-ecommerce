@@ -49,7 +49,7 @@ export function CheckoutForm({ cartItems, profile, addresses, userId }: Checkout
   )
   const [showNewAddress, setShowNewAddress] = useState(addresses.length === 0)
   const [isProcessing, setIsProcessing] = useState(false)
-  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('paystack')
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('bank_transfer')
   const [error, setError] = useState<string | null>(null)
   const router = useRouter()
 
@@ -114,6 +114,8 @@ export function CheckoutForm({ cartItems, profile, addresses, userId }: Checkout
       // Redirect based on payment method
       if (result.payment_url) {
         window.location.href = result.payment_url
+      } else if (selectedPaymentMethod === 'bank_transfer') {
+        router.push(`/orders/${result.order_id}/bank-transfer`)
       } else {
         router.push(`/orders/${result.order_id}/success`)
       }
@@ -249,29 +251,16 @@ export function CheckoutForm({ cartItems, profile, addresses, userId }: Checkout
             <CardTitle>Payment Method</CardTitle>
           </CardHeader>
           <CardContent>
-            <RadioGroup value={selectedPaymentMethod} onValueChange={setSelectedPaymentMethod} className="space-y-3">
+            <div className="space-y-3">
               <div className="flex items-center space-x-3 rounded-lg border p-4">
-                <RadioGroupItem value="paystack" id="paystack" />
-                <label htmlFor="paystack" className="flex-1 cursor-pointer">
-                  <div className="font-medium">Paystack</div>
-                  <div className="text-sm text-muted-foreground">Pay with credit/debit card</div>
-                </label>
-              </div>
-              <div className="flex items-center space-x-3 rounded-lg border p-4">
-                <RadioGroupItem value="bank_transfer" id="bank_transfer" />
+                <RadioGroupItem value="bank_transfer" id="bank_transfer" checked />
                 <label htmlFor="bank_transfer" className="flex-1 cursor-pointer">
                   <div className="font-medium">Bank Transfer</div>
                   <div className="text-sm text-muted-foreground">Transfer to our bank account</div>
                 </label>
               </div>
-              <div className="flex items-center space-x-3 rounded-lg border p-4">
-                <RadioGroupItem value="cash_on_delivery" id="cash_on_delivery" />
-                <label htmlFor="cash_on_delivery" className="flex-1 cursor-pointer">
-                  <div className="font-medium">Cash on Delivery</div>
-                  <div className="text-sm text-muted-foreground">Pay when you receive your order</div>
-                </label>
-              </div>
-            </RadioGroup>
+              <input type="hidden" value="bank_transfer" name="payment_method" />
+            </div>
           </CardContent>
         </Card>
       </div>

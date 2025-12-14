@@ -358,6 +358,7 @@ function getPaymentStatusVariant(status: string): "default" | "secondary" | "des
             return "secondary"
         case "not_paid":
         case "disputed":
+        case "payment_failed":
             return "destructive"
         case "refunded":
         case "partially_refunded":

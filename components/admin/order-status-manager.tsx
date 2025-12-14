@@ -138,6 +138,50 @@ export function OrderStatusManager({ order, adminId }: OrderStatusManagerProps) 
 
     return (
         <div className="space-y-6">
+            {/* Bank Transfer Verification */}
+            {order.payment_method === 'bank_transfer' && order.payment_status === 'pending' && (
+                <Card className="border-primary">
+                    <CardHeader>
+                        <CardTitle className="flex items-center gap-2">
+                            <div className="h-3 w-3 rounded-full bg-primary"></div>
+                            Bank Transfer Verification
+                        </CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                        <p className="text-sm text-muted-foreground">
+                            This order was placed using bank transfer. Verify that the payment has been received before updating the status.
+                        </p>
+                        <div className="flex flex-wrap gap-2">
+                            <Button
+                                onClick={() => {
+                                    setNewStatus('paid');
+                                    setStatusReason('Bank transfer verified');
+                                    handleUpdateStatus();
+                                }}
+                                disabled={isLoading}
+                                className="flex-1 min-w-[120px]"
+                            >
+                                {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                                Mark as Paid
+                            </Button>
+                            <Button
+                                variant="outline"
+                                onClick={() => {
+                                    setNewStatus('payment_failed');
+                                    setStatusReason('Bank transfer not received');
+                                    handleUpdateStatus();
+                                }}
+                                disabled={isLoading}
+                                className="flex-1 min-w-[120px]"
+                            >
+                                {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                                Mark as Failed
+                            </Button>
+                        </div>
+                    </CardContent>
+                </Card>
+            )}
+
             {/* Update Status */}
             {canUpdateStatus && (
                 <Card>
@@ -154,6 +198,7 @@ export function OrderStatusManager({ order, adminId }: OrderStatusManagerProps) 
                                     </SelectTrigger>
                                     <SelectContent>
                                         <SelectItem value="pending_payment">Pending Payment</SelectItem>
+                                        <SelectItem value="payment_failed">Payment Failed</SelectItem>
                                         <SelectItem value="paid">Paid</SelectItem>
                                         <SelectItem value="processing">Processing</SelectItem>
                                         <SelectItem value="ready_for_shipment">Ready for Shipment</SelectItem>

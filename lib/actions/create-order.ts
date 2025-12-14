@@ -299,6 +299,16 @@ export async function createOrder(
                     p_message: paymentError.message,
                 })
             }
+        } else if (validated.payment_method === 'bank_transfer') {
+            // For bank transfer, we don't need a payment URL but we update the order status
+            await supabase
+                .from('orders')
+                .update({
+                    payment_method: 'bank_transfer',
+                    order_status: 'pending_payment',
+                    payment_status: 'pending'
+                })
+                .eq('id', order.id)
         }
 
         // Step 8: Clear cart

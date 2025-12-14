@@ -107,13 +107,14 @@ export default async function AccountPage() {
                   </div>
                   <div className="flex items-center gap-4">
                     <span
-                      className={`rounded-full px-3 py-1 text-xs font-semibold ${
-                        order.status === "pending"
+                      className={`rounded-full px-3 py-1 text-xs font-semibold ${order.status === "pending"
                           ? "bg-yellow-100 text-yellow-800"
                           : order.status === "completed"
                             ? "bg-green-100 text-green-800"
-                            : "bg-gray-100 text-gray-800"
-                      }`}
+                            : order.status === "payment_failed"
+                              ? "bg-red-100 text-red-800"
+                              : "bg-gray-100 text-gray-800"
+                        }`}
                     >
                       {order.status}
                     </span>
