@@ -20,7 +20,11 @@ ADD CONSTRAINT orders_user_id_fkey
 FOREIGN KEY (user_id) REFERENCES auth.users(id)
 ON DELETE CASCADE;
 
--- Refresh the PostgREST schema cache
+-- ============================================================================
+-- REFRESH POSTGREST SCHEMA CACHE
+-- ============================================================================
+
+-- Just refresh the PostgREST schema cache since constraints already exist
 NOTIFY pgrst, 'reload schema';
 
 -- Add a comment to explain the relationship
