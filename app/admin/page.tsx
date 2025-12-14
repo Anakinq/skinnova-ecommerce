@@ -7,8 +7,12 @@ import { formatPrice } from "@/lib/format-currency"
 import { checkIsAdmin } from "@/lib/check-admin"
 
 export default async function AdminDashboardPage() {
+  console.log("Admin dashboard page loading...")
   const isAdmin = await checkIsAdmin()
+  console.log("Admin check result:", isAdmin)
+  
   if (!isAdmin) {
+    console.log("Not admin, redirecting to login")
     redirect("/auth/login?redirect=/admin")
   }
 
@@ -17,7 +21,10 @@ export default async function AdminDashboardPage() {
     data: { user },
   } = await supabase.auth.getUser()
 
+  console.log("User data:", user)
+
   if (!user) {
+    console.log("No user, redirecting to login")
     redirect("/auth/login?redirect=/admin")
   }
 
@@ -45,11 +52,16 @@ export default async function AdminDashboardPage() {
     .order("created_at", { ascending: false })
     .limit(5)
 
+  console.log("Dashboard data loaded:", { totalProducts, totalOrders, totalUsers, recentOrdersCount: recentOrders?.length })
+
   return (
     <div className="container px-4 py-12 md:px-6">
       <div className="mb-8">
         <h1 className="mb-2 font-serif text-3xl font-bold md:text-4xl">Admin Dashboard</h1>
         <p className="text-muted-foreground">Manage your skincare e-commerce store</p>
+        <div className="mt-2 text-sm text-muted-foreground">
+          Welcome, {user.email}
+        </div>
       </div>
 
       <div className="mb-8 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
@@ -99,8 +111,8 @@ export default async function AdminDashboardPage() {
       </div>
 
       <div className="mb-8 grid gap-6 md:grid-cols-3">
-        <Link href="/admin/products">
-          <Card className="transition-shadow hover:shadow-lg">
+        <Link href="/admin/products" className="block">
+          <Card className="transition-shadow hover:shadow-lg cursor-pointer">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Package className="h-5 w-5" />
@@ -113,8 +125,8 @@ export default async function AdminDashboardPage() {
           </Card>
         </Link>
 
-        <Link href="/admin/orders">
-          <Card className="transition-shadow hover:shadow-lg">
+        <Link href="/admin/orders" className="block">
+          <Card className="transition-shadow hover:shadow-lg cursor-pointer">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <ShoppingCart className="h-5 w-5" />
@@ -127,8 +139,8 @@ export default async function AdminDashboardPage() {
           </Card>
         </Link>
 
-        <Link href="/admin/customers">
-          <Card className="transition-shadow hover:shadow-lg">
+        <Link href="/admin/customers" className="block">
+          <Card className="transition-shadow hover:shadow-lg cursor-pointer">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Users className="h-5 w-5" />
