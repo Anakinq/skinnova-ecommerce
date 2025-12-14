@@ -252,12 +252,12 @@ export function CheckoutForm({ cartItems, profile, addresses, userId }: Checkout
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
-              <div className="flex items-center space-x-3 rounded-lg border p-4">
-                <RadioGroupItem value="bank_transfer" id="bank_transfer" checked />
-                <label htmlFor="bank_transfer" className="flex-1 cursor-pointer">
+              <div className="flex items-center space-x-3 rounded-lg border p-4 bg-primary/5">
+                <div className="h-4 w-4 rounded-full bg-primary"></div>
+                <div className="flex-1">
                   <div className="font-medium">Bank Transfer</div>
                   <div className="text-sm text-muted-foreground">Transfer to our bank account</div>
-                </label>
+                </div>
               </div>
               <input type="hidden" value="bank_transfer" name="payment_method" />
             </div>
