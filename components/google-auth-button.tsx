@@ -2,7 +2,7 @@
 
 import { createClient } from "@/lib/supabase/client"
 import { Button } from "@/components/ui/button"
-import { Icons } from "@/components/icons"
+import { Icons } from "./icons"
 
 interface GoogleAuthButtonProps {
     type: "sign-in" | "sign-up"
