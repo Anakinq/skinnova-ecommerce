@@ -10,6 +10,7 @@ import { Label } from "@/components/ui/label"
 import Link from "next/link"
 import { useRouter, useSearchParams } from "next/navigation"
 import { useState, Suspense, useEffect } from "react"
+import { GoogleAuthButton } from "@/components/google-auth-button"
 
 function LoginForm() {
   const [email, setEmail] = useState("")
@@ -105,13 +106,25 @@ function LoginForm() {
                   {isLoading ? "Logging in..." : "Login"}
                 </Button>
               </div>
-              <div className="mt-4 text-center text-sm">
-                Don&apos;t have an account?{" "}
-                <Link href="/auth/sign-up" className="font-medium underline underline-offset-4">
-                  Sign up
-                </Link>
-              </div>
             </form>
+
+            <div className="relative my-6">
+              <div className="absolute inset-0 flex items-center">
+                <span className="w-full border-t" />
+              </div>
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-background px-2 text-muted-foreground">Or continue with</span>
+              </div>
+            </div>
+
+            <GoogleAuthButton type="sign-in" redirectUrl={redirect} />
+
+            <div className="mt-4 text-center text-sm">
+              Don&apos;t have an account?{" "}
+              <Link href="/auth/sign-up" className="font-medium underline underline-offset-4">
+                Sign up
+              </Link>
+            </div>
           </CardContent>
         </Card>
       </div>

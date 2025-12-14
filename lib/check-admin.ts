@@ -20,14 +20,35 @@ export async function checkIsAdmin() {
     return true
   }
 
-  const { data: profile, error: profileError } = await supabase.from("profiles").select("is_admin").eq("id", user.id).single()
+  try {
+    // First try to get admin status from JWT claims
+    const { data: { session } } = await supabase.auth.getSession()
+    const isAdminClaim = session?.user?.app_metadata?.is_admin
 
-  // Debugging
-  console.log("Profile check result:", { profile, profileError })
+    if (typeof isAdminClaim === 'boolean') {
+      console.log("Admin status from JWT claim:", isAdminClaim)
+      return isAdminClaim
+    }
 
-  if (profileError) {
+    // Fallback to checking the profiles table with error handling
+    const { data: profile, error: profileError } = await supabase
+      .from("profiles")
+      .select("is_admin")
+      .eq("id", user.id)
+      .single()
+
+    // Debugging
+    console.log("Profile check result:", { profile, profileError })
+
+    if (profileError) {
+      console.error("Error checking profile for admin status:", profileError)
+      return false
+    }
+
+    return profile?.is_admin === true
+  } catch (error) {
+    console.error("Error in admin check:", error)
+    // Even if there's an error, we return false rather than letting it propagate
     return false
   }
-
-  return profile?.is_admin === true
 }
