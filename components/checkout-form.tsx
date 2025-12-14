@@ -76,12 +76,22 @@ export function CheckoutForm({ cartItems, profile, addresses, userId }: Checkout
     setError(null)
 
     try {
+      // Validate that an address is selected
+      if (!showNewAddress && !selectedAddress) {
+        throw new Error('Please select a shipping address')
+      }
+
+      // Validate payment method
+      if (!selectedPaymentMethod) {
+        throw new Error('Please select a payment method')
+      }
+
       const formData = new FormData()
 
       // Add address data
       if (showNewAddress) {
         formData.append('new_address', JSON.stringify(newAddress))
-      } else {
+      } else if (selectedAddress) {
         formData.append('address_id', selectedAddress)
       }
 
