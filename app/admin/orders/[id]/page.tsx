@@ -270,6 +270,18 @@ export default async function AdminOrderDetailPage({ params }: PageProps) {
                                         <div className="mt-1 font-mono text-sm">{order.fulfillment.tracking_number}</div>
                                     </div>
                                 )}
+                                {order.fulfillment.delivery_agent && (
+                                    <div>
+                                        <div className="text-sm text-muted-foreground">Delivery Agent</div>
+                                        <div className="mt-1">{order.fulfillment.delivery_agent}</div>
+                                    </div>
+                                )}
+                                {order.fulfillment.agent_contact && (
+                                    <div>
+                                        <div className="text-sm text-muted-foreground">Agent Contact</div>
+                                        <div className="mt-1">{order.fulfillment.agent_contact}</div>
+                                    </div>
+                                )}
                                 {order.fulfillment.estimated_delivery && (
                                     <div>
                                         <div className="text-sm text-muted-foreground">Estimated Delivery</div>

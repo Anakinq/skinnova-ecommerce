@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import { formatPrice } from "@/lib/format-currency"
-import { Package, Truck, Calendar } from "lucide-react"
+import { Package, Truck, Calendar, User } from "lucide-react"
 
 interface OrderDetailPageProps {
   params: Promise<{
@@ -60,6 +60,9 @@ export default async function OrderDetailPage({ params }: OrderDetailPageProps) 
       )
     `)
     .eq("order_id", order.id)
+
+  // Extract fulfillment data for easier access
+  const fulfillment = order.fulfillment || {}
 
   return (
     <div className="container px-4 py-12 md:px-6">
@@ -128,7 +131,7 @@ export default async function OrderDetailPage({ params }: OrderDetailPageProps) 
             </Card>
           )}
 
-          {order.tracking_number && (
+          {(fulfillment.tracking_number || fulfillment.courier || fulfillment.delivery_agent) && (
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
@@ -138,29 +141,43 @@ export default async function OrderDetailPage({ params }: OrderDetailPageProps) 
               </CardHeader>
               <CardContent className="space-y-3">
                 <div className="space-y-2">
-                  <div className="flex items-start gap-2">
-                    <Truck className="mt-0.5 h-4 w-4 text-muted-foreground" />
-                    <div className="flex-1">
-                      <div className="text-sm font-medium">Tracking Number</div>
-                      <div className="font-mono text-sm text-muted-foreground">{order.tracking_number}</div>
+                  {fulfillment.tracking_number && (
+                    <div className="flex items-start gap-2">
+                      <Truck className="mt-0.5 h-4 w-4 text-muted-foreground" />
+                      <div className="flex-1">
+                        <div className="text-sm font-medium">Tracking Number</div>
+                        <div className="font-mono text-sm text-muted-foreground">{fulfillment.tracking_number}</div>
+                      </div>
                     </div>
-                  </div>
-                  {order.tracking_company && (
+                  )}
+                  {fulfillment.courier && (
                     <div className="flex items-start gap-2">
                       <Package className="mt-0.5 h-4 w-4 text-muted-foreground" />
                       <div className="flex-1">
                         <div className="text-sm font-medium">Shipping Company</div>
-                        <div className="text-sm text-muted-foreground">{order.tracking_company}</div>
+                        <div className="text-sm text-muted-foreground">{fulfillment.courier}</div>
                       </div>
                     </div>
                   )}
-                  {order.estimated_delivery_date && (
+                  {fulfillment.delivery_agent && (
+                    <div className="flex items-start gap-2">
+                      <User className="mt-0.5 h-4 w-4 text-muted-foreground" />
+                      <div className="flex-1">
+                        <div className="text-sm font-medium">Delivery Agent</div>
+                        <div className="text-sm text-muted-foreground">{fulfillment.delivery_agent}</div>
+                        {fulfillment.agent_contact && (
+                          <div className="text-xs text-muted-foreground">Contact: {fulfillment.agent_contact}</div>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                  {fulfillment.estimated_delivery && (
                     <div className="flex items-start gap-2">
                       <Calendar className="mt-0.5 h-4 w-4 text-muted-foreground" />
                       <div className="flex-1">
                         <div className="text-sm font-medium">Estimated Delivery</div>
                         <div className="text-sm text-muted-foreground">
-                          {new Date(order.estimated_delivery_date).toLocaleDateString("en-US", {
+                          {new Date(fulfillment.estimated_delivery).toLocaleDateString("en-US", {
                             weekday: "long",
                             year: "numeric",
                             month: "long",

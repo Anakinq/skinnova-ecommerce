@@ -43,6 +43,8 @@ export function OrderStatusManager({ order, adminId }: OrderStatusManagerProps) 
     const [statusReason, setStatusReason] = useState("")
     const [trackingNumber, setTrackingNumber] = useState(order.fulfillment?.tracking_number || "")
     const [courier, setCourier] = useState(order.fulfillment?.courier || "")
+    const [deliveryAgent, setDeliveryAgent] = useState(order.fulfillment?.delivery_agent || "")
+    const [agentContact, setAgentContact] = useState(order.fulfillment?.agent_contact || "")
     const [estimatedDelivery, setEstimatedDelivery] = useState(
         order.fulfillment?.estimated_delivery || ""
     )
@@ -63,6 +65,8 @@ export function OrderStatusManager({ order, adminId }: OrderStatusManagerProps) 
                 reason: statusReason,
                 tracking_number: trackingNumber,
                 courier: courier,
+                delivery_agent: deliveryAgent,
+                agent_contact: agentContact,
                 estimated_delivery: estimatedDelivery,
                 admin_id: adminId,
             })
@@ -241,6 +245,26 @@ export function OrderStatusManager({ order, adminId }: OrderStatusManagerProps) 
                                             placeholder="Tracking number"
                                             value={trackingNumber}
                                             onChange={(e) => setTrackingNumber(e.target.value)}
+                                        />
+                                    </div>
+                                </div>
+                                <div className="grid gap-4 md:grid-cols-2">
+                                    <div className="space-y-2">
+                                        <Label htmlFor="delivery-agent">Delivery Agent Name</Label>
+                                        <Input
+                                            id="delivery-agent"
+                                            placeholder="Agent responsible for delivery"
+                                            value={deliveryAgent}
+                                            onChange={(e) => setDeliveryAgent(e.target.value)}
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <Label htmlFor="agent-contact">Agent Contact</Label>
+                                        <Input
+                                            id="agent-contact"
+                                            placeholder="Phone or email"
+                                            value={agentContact}
+                                            onChange={(e) => setAgentContact(e.target.value)}
                                         />
                                     </div>
                                 </div>

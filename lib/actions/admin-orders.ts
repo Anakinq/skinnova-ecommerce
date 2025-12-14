@@ -26,6 +26,8 @@ interface UpdateOrderStatusParams {
     reason?: string
     tracking_number?: string
     courier?: string
+    delivery_agent?: string
+    agent_contact?: string
     estimated_delivery?: string
     admin_id: string
 }
@@ -69,12 +71,14 @@ export async function updateOrderStatus(params: UpdateOrderStatusParams) {
         }
 
         // Update fulfillment info if provided
-        if (params.tracking_number || params.courier || params.estimated_delivery) {
+        if (params.tracking_number || params.courier || params.estimated_delivery || params.delivery_agent || params.agent_contact) {
             const currentFulfillment = order.fulfillment || {}
             updates.fulfillment = {
                 ...currentFulfillment,
                 ...(params.tracking_number && { tracking_number: params.tracking_number }),
                 ...(params.courier && { courier: params.courier }),
+                ...(params.delivery_agent && { delivery_agent: params.delivery_agent }),
+                ...(params.agent_contact && { agent_contact: params.agent_contact }),
                 ...(params.estimated_delivery && { estimated_delivery: params.estimated_delivery }),
                 updated_at: new Date().toISOString(),
             }
