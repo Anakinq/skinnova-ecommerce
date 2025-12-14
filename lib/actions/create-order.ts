@@ -45,10 +45,15 @@ export async function createOrder(
     try {
         // Parse and validate input
         const rawData = {
-            address_id: formData.get('address_id') as string | undefined,
+            address_id: formData.get('address_id') ? String(formData.get('address_id')) : undefined,
             new_address: formData.get('new_address') ? JSON.parse(formData.get('new_address') as string) : undefined,
-            payment_method: formData.get('payment_method') as string,
-            idempotency_key: formData.get('idempotency_key') as string | undefined,
+            payment_method: String(formData.get('payment_method') || ''),
+            idempotency_key: formData.get('idempotency_key') ? String(formData.get('idempotency_key')) : undefined,
+        }
+
+        // Validate required fields before parsing
+        if (!rawData.payment_method) {
+            return { success: false, error: 'Payment method is required' }
         }
 
         const validated = checkoutSchema.parse(rawData)

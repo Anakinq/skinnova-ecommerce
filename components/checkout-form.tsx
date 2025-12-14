@@ -98,6 +98,9 @@ export function CheckoutForm({ cartItems, profile, addresses, userId }: Checkout
       // Add payment method
       formData.append('payment_method', selectedPaymentMethod)
 
+      // Add idempotency key
+      formData.append('idempotency_key', `checkout-${userId}-${Date.now()}`)
+
       // Call server action
       const result = await createOrder(userId, formData)
 
