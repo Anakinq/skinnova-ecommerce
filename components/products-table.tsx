@@ -30,7 +30,12 @@ interface ProductsTableProps {
 export function ProductsTable({ products: initialProducts }: ProductsTableProps) {
   // Debugging - log the products data
   console.log("Products data:", initialProducts);
-  
+
+  // Log individual products
+  initialProducts.forEach((product, index) => {
+    console.log(`Product ${index}:`, product);
+  });
+
   const [products, setProducts] = useState(initialProducts)
   const router = useRouter()
 
@@ -65,6 +70,7 @@ export function ProductsTable({ products: initialProducts }: ProductsTableProps)
             <TableBody>
               {products.map((product) => (
                 <TableRow key={product.id}>
+                  {/* Debugging - log individual product */}
                   <TableCell>
                     <div className="relative h-12 w-12 overflow-hidden rounded-md bg-muted">
                       <Image
