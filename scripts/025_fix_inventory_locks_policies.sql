@@ -5,6 +5,13 @@
 -- Enable RLS on inventory_locks table
 ALTER TABLE inventory_locks ENABLE ROW LEVEL SECURITY;
 
+-- Drop existing policies if they exist
+DROP POLICY IF EXISTS "Users can create inventory locks" ON inventory_locks;
+DROP POLICY IF EXISTS "Users can view own inventory locks" ON inventory_locks;
+DROP POLICY IF EXISTS "Users can update own inventory locks" ON inventory_locks;
+DROP POLICY IF EXISTS "Users can delete own inventory locks" ON inventory_locks;
+DROP POLICY IF EXISTS "Admins can manage all inventory locks" ON inventory_locks;
+
 -- Users can create inventory locks (needed during checkout)
 CREATE POLICY "Users can create inventory locks" ON inventory_locks FOR INSERT WITH CHECK (
   auth.uid() IS NOT NULL
@@ -48,6 +55,11 @@ FOR ALL USING (
 );
 
 -- Also fix any missing policies for other tables
+-- Drop existing policies if they exist
+DROP POLICY IF EXISTS "Users can create orders" ON orders;
+DROP POLICY IF EXISTS "Users can view own orders" ON orders;
+DROP POLICY IF EXISTS "Users can update own orders" ON orders;
+
 -- Users can create orders
 CREATE POLICY "Users can create orders" ON orders FOR INSERT WITH CHECK (
   user_id = auth.uid()
