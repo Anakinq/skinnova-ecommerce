@@ -21,15 +21,10 @@ export default async function AdminOrdersPage() {
   // Debug: Log user info
   console.log("Fetching orders for user:", user?.id, user?.email)
 
+  // Simplified query without the problematic join
   const { data: orders, error } = await supabase
     .from("orders")
-    .select(`
-      *,
-      profiles (
-        full_name,
-        email
-      )
-    `)
+    .select("*")
     .order("created_at", { ascending: false })
 
   // Debug: Log results
@@ -37,6 +32,27 @@ export default async function AdminOrdersPage() {
 
   if (error) {
     console.error("Error fetching orders:", error)
+  }
+
+  // If we have orders, try to fetch customer info separately
+  if (orders && orders.length > 0) {
+    const userIds = [...new Set(orders.map(order => order.user_id).filter(Boolean))]
+    if (userIds.length > 0) {
+      const { data: profiles, error: profilesError } = await supabase
+        .from("profiles")
+        .select("id, full_name, email")
+        .in("id", userIds)
+
+      if (!profilesError && profiles) {
+        // Merge profile data with orders
+        orders.forEach(order => {
+          const profile = profiles.find(p => p.id === order.user_id)
+          if (profile) {
+            order.profiles = profile
+          }
+        })
+      }
+    }
   }
 
   return (

@@ -25,7 +25,9 @@ interface Order {
   tracking_url?: string
   estimated_delivery_date?: string
   delivery_notes?: string
-  profiles: {
+  user_id?: string
+  profiles?: {
+    id: string
     full_name: string
     email: string
   } | null
@@ -115,8 +117,12 @@ export function OrdersTable({ orders: initialOrders }: OrdersTableProps) {
                   <TableCell className="font-mono font-semibold">{order.order_number}</TableCell>
                   <TableCell>
                     <div>
-                      <div className="font-medium">{order.profiles?.full_name || "Guest"}</div>
-                      <div className="text-sm text-muted-foreground">{order.profiles?.email}</div>
+                      <div className="font-medium">
+                        {order.profiles?.full_name || "Guest"}
+                      </div>
+                      <div className="text-sm text-muted-foreground">
+                        {order.profiles?.email || "No email"}
+                      </div>
                     </div>
                   </TableCell>
                   <TableCell>{new Date(order.created_at).toLocaleDateString()}</TableCell>
