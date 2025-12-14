@@ -2,13 +2,19 @@
 -- FIX ORDERS-PROFILES RELATIONSHIP ISSUE
 -- ============================================================================
 
--- Ensure the profiles table has the correct foreign key constraint
+-- Ensure the profiles table has the correct foreign key constraint (drop if exists first)
+ALTER TABLE profiles
+DROP CONSTRAINT IF EXISTS profiles_id_fkey;
+
 ALTER TABLE profiles
 ADD CONSTRAINT profiles_id_fkey
 FOREIGN KEY (id) REFERENCES auth.users(id)
 ON DELETE CASCADE;
 
--- Ensure the orders table has the correct foreign key constraint
+-- Ensure the orders table has the correct foreign key constraint (drop if exists first)
+ALTER TABLE orders
+DROP CONSTRAINT IF EXISTS orders_user_id_fkey;
+
 ALTER TABLE orders
 ADD CONSTRAINT orders_user_id_fkey
 FOREIGN KEY (user_id) REFERENCES auth.users(id)
