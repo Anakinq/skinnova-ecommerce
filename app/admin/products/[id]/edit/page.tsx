@@ -6,6 +6,9 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { AlertCircle, Loader2 } from "lucide-react"
 
 export default async function EditProductPage({ params }: { params: { id: string } }) {
+  // Debugging - log the params
+  console.log("Edit page params:", params);
+  
   const isAdmin = await checkIsAdmin()
   if (!isAdmin) {
     redirect("/auth/login?redirect=/admin/products")
@@ -18,6 +21,21 @@ export default async function EditProductPage({ params }: { params: { id: string
 
   if (!user) {
     redirect("/auth/login?redirect=/admin/products")
+  }
+
+  // Debugging - check if id is valid
+  if (!params.id || params.id === 'undefined') {
+    return (
+      <div className="container px-4 py-12 md:px-6">
+        <Alert variant="destructive">
+          <AlertCircle className="h-4 w-4" />
+          <AlertTitle>Invalid Product ID</AlertTitle>
+          <AlertDescription>
+            Product ID is missing or invalid: {params.id}
+          </AlertDescription>
+        </Alert>
+      </div>
+    )
   }
 
   const { data: product, error } = await supabase.from("products").select("*").eq("id", params.id).single()

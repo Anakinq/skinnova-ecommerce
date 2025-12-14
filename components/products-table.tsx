@@ -28,6 +28,9 @@ interface ProductsTableProps {
 }
 
 export function ProductsTable({ products: initialProducts }: ProductsTableProps) {
+  // Debugging - log the products data
+  console.log("Products data:", initialProducts);
+  
   const [products, setProducts] = useState(initialProducts)
   const router = useRouter()
 
