@@ -1,0 +1,15 @@
+# Vercel Build Log
+
+This file is created to help diagnose deployment issues with Vercel.
+
+Common issues that might prevent deployment:
+1. Missing environment variables
+2. Incorrect build configuration
+3. Git branch mismatch
+4. Repository not properly connected to Vercel
+
+Steps to troubleshoot:
+1. Verify that all required environment variables are set in Vercel dashboard
+2. Check that the repository is properly connected to Vercel
+3. Ensure the correct branch (master) is being deployed
+4. Check Vercel logs for specific error messages
